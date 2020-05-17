@@ -26,30 +26,31 @@ public class TodoResource {
 	@Autowired
 	private TodoHardcodedService todoService;
 	
-	@GetMapping("/users/{username}/todos")
+	@GetMapping("users/{username}/todos")
 	public List<Todo> getAllTodos(@PathVariable String username){
 		return todoService.findAll();
 	}
 	
-	@GetMapping("/users/{username}/todos/{id}")
+	@GetMapping("users/{username}/todos/{id}")
 	public Todo getTodo(@PathVariable String username, @PathVariable int id){
 		return todoService.findById(id);
 	}
 	
-	@PutMapping("/users/{username}/todos/{id}")
+	@PutMapping("users/{username}/todos/{id}")
 	public ResponseEntity<Todo> updateTodo(@PathVariable String username, @PathVariable int id, @RequestBody Todo todo) {
 		Todo updatedTodo = todoService.saveTodo(todo);
 		return new ResponseEntity<Todo>(updatedTodo, HttpStatus.OK);
 	}
 	
-	@PostMapping("/users/{username}/todos")
+	@PostMapping("users/{username}/todos")
 	public ResponseEntity<Void> createTodo(@PathVariable String username, @RequestBody Todo todo) {
 		Todo createdTodo = todoService.saveTodo(todo);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdTodo.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
+				path("/{id}").buildAndExpand(createdTodo.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@DeleteMapping("/users/{username}/todos/{id}")
+	@DeleteMapping("users/{username}/todos/{id}")
 	public ResponseEntity<Void> deleteTodo(@PathVariable String username, @PathVariable int id) {
 		
 		Todo todo = todoService.deleteById(id);
